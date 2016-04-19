@@ -1,10 +1,11 @@
 {
-  "name": "Fintech Anguler 2",
+  "name": "Fintech-Anguler-2",
   "version": "1.0.0",
   "description": "Financial Technology app in Angular 2",
   "main": "server/bootstrap.js",
   "scripts": {
-    "start": "npm install && node ./node_modules/gulp/bin/gulp.js go"
+    "start": "npm install && node ./node_modules/gulp/bin/gulp.js go",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "del": "1.2.0",
+    "gh-pages": "^0.11.0",
     "gulp": "3.9.0",
     "gulp-changed": "1.2.1",
     "gulp-concat": "2.6.0",
