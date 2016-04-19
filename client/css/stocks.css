@@ -1,0 +1,16 @@
+body {
+  background: #EFE7BE;
+  }
+
+  .stock-card.mdl-card {
+  background: #333;
+}
+.stock-card.mdl-card.increase {
+  background: #167F39;
+  color: #fff;
+}
+.stock-card.mdl-card.decrease {
+  background: #AB1A25;
+  color: #fff;
+}
+
