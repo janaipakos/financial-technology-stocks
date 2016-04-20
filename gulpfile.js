@@ -4,98 +4,123 @@ var changed = require('gulp-changed');
 var childProcess = require('child_process');
 var del = require('del');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var runSequence = require('run-sequence');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var ts = require('gulp-typescript');
 var minimist = require('minimist');
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var webpackConfig = require('./webpack.config.js');
 
+var packageJson = require('./package.json');
 
-//copy html and css files
-gulp.task('copy', ['clean'], function() {
-    return gulp.src([
-        'src/index.html',
-        'src/**/*.html',
-        'src/**/*.css'
-    ])
-    .pipe(gulp.dest('dist'));
+var spawn = childProcess.spawn;
+var server;
+
+var PATHS = {
+  libs: [
+    'node_modules/angular2/bundles/angular2.dev.js',
+    'node_modules/angular2/bundles/http.dev.js',
+    'node_modules/angular2/bundles/router.dev.js',
+    'node_modules/systemjs/dist/system.src.js'
+  ],
+  client: {
+    ts: ['client/**/*.ts'],
+    html: 'client/**/*.html',
+    css: 'client/**/*.css',
+    img: 'client/**/*.{svg,jpg,png,ico}'
+  },
+  dist: 'dist',
+  distClient: 'dist/client',
+  distLib: 'dist/lib',
+  port: 8080
+};
+
+var tsProject = ts.createProject('tsconfig.json');
+
+gulp.task('clean', function(done) {
+  del([PATHS.dist], done);
 });
 
-//clean the dist folder
-gulp.task('clean', function(cb){
-    return del(['dist/**/*']);
-    cb();
+gulp.task('ts', function() {
+  return gulp
+    .src(PATHS.client.ts)
+    .pipe(changed(PATHS.distClient, {
+      extension: '.js'
+    }))
+    .pipe(sourcemaps.init())
+    .pipe(ts(tsProject))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(PATHS.distClient));
 });
 
-// build javascript for deployment using webpack
-gulp.task('build', ['clean'], function(callback) {
-    //modify webpack config options
-    var myConfig = Object.create(webpackConfig);
-    myConfig.plugins = myConfig.plugins.concat(
-        new webpack.DefinePlugin({
-            "process.env": {
-                // This has effect on the react lib size
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin()
-    );
-    // run webpack
-    webpack(myConfig, function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack:build", err);
-        gutil.log("[build]", stats.toString({
-            colors: true
-        }));
-        callback();
-    });
+gulp.task('html', function() {
+  return gulp
+    .src(PATHS.client.html)
+    .pipe(changed(PATHS.distClient))
+    .pipe(gulp.dest(PATHS.distClient));
 });
 
-gulp.task('deploy',['clean', 'copy','build']);
-
-// modify some webpack config options
-var myDevConfig = Object.create(webpackConfig);
-myDevConfig.devtool = "sourcemap";
-myDevConfig.debug = true;
-
-// create a single instance of the compiler to allow caching
-var devCompiler = webpack(myDevConfig);
-
-gulp.task("build-dev", ['clean'], function(callback) {
-    // run webpack
-    devCompiler.run(function(err, stats) {
-        if(err) throw new gutil.PluginError("build-dev", err);
-        gutil.log("[build-dev]", stats.toString({
-            colors: true
-        }));
-        callback();
-    });
+gulp.task('css', function() {
+  return gulp
+    .src(PATHS.client.css)
+    .pipe(changed(PATHS.distClient, {
+      extension: '.css'
+    }))
+    .pipe(sourcemaps.init())
+    .pipe(concat('app.css'))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(PATHS.distClient));
 });
 
-gulp.task("dev", ["copy","build-dev"])
-
-//run webpack dev server
-gulp.task("dev-server", function(callback) {
-    // modify some webpack config options
-    var myConfig = Object.create(webpackConfig);
-    myConfig.devtool = "source-map";
-    myConfig.debug = true;
-
-    // Start a webpack-dev-server
-    new WebpackDevServer(webpack(myConfig), {
-        contentBase: 'src',
-        //publicPath: "/" + myConfig.output.publicPath,
-        stats: {
-            colors: true
-        }
-    }).listen(8080, "localhost", function(err) {
-        if(err) throw new gutil.PluginError("webpack-dev-server", err);
-        gutil.log("[dev-server]", "http://localhost:8080/webpack-dev-server/index.html");
-    });
+gulp.task('img', function() {
+  return gulp
+    .src(PATHS.client.img)
+    .pipe(changed(PATHS.distClient))
+    .pipe(gulp.dest(PATHS.distClient));
 });
 
-gulp.task('default', ['dev-server']);
+gulp.task('bundle', function(done) {
+  runSequence('clean', ['libs', 'ts', 'html', 'css', 'img'], done);
+});
+
+gulp.task('server:restart', function(done) {
+  var started = false;
+  if (server) {
+    server.kill();
+  }
+  var args = minimist(process.argv.slice(2), {default: {port: '8080'}});
+  server = spawn('node', [packageJson.main, '--port', args.port]);
+  server.stdout.on('data', function(data) {
+    console.log(data.toString());
+    if (started === false) {
+      started = true;
+      done();
+    }
+  });
+  server.stderr.on('data', function(data) {
+    console.error(data.toString());
+  });
+});
+
+// clean up if an error goes unhandled.
+process.on('exit', function() {
+  if (server) {
+    server.kill();
+  }
+});
+
+gulp.task('libs', function() {
+  return gulp
+    .src(PATHS.libs)
+    .pipe(changed(PATHS.distLib))
+    .pipe(gulp.dest(PATHS.distLib));
+})
+
+gulp.task('go', ['bundle', 'server:restart'], function() {
+  gulp.watch(PATHS.client.ts, ['ts']);
+  gulp.watch(PATHS.client.html, ['html']);
+  gulp.watch(PATHS.client.css, ['css']);
+  gulp.watch(PATHS.client.img, ['img']);
+  gulp.watch(packageJson.main, ['server:restart']);
+});
+
+gulp.task('default', ['bundle']);
