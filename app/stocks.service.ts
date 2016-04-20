@@ -1,20 +1,20 @@
-import { Inject } from 'angular2/angular2';
-import { Http } from 'angular2/http';
+import {Inject} from 'angular2/core';
+import {Http} from 'angular2/http';
 
 let stocks: Array<string> = ['V', 'MA', 'AXP', 'FISV', 'LC', 'JKHY', 'SSNC', 'ACIW', 'FICO', 'ONDK', 'VIRT'];
+let service: string = 'https://angular2-in-action-api.herokuapp.com';
 
 export interface StockInterface {
   symbol: string;
   lastTradePriceOnly: number;
   change: number;
   changeInPercent: number;
-  name: string;
 }
 
 export class StocksService {
   http: Http;
-  constructor(@Inject(Http) Http) {
-      this.http = Http;
+  constructor(@Inject(Http) http) {
+    this.http = http;
   }
 
   get() {
@@ -33,9 +33,7 @@ export class StocksService {
 
   load(symbols) {
     if (symbols) {
-      return this.http.get('/financial-technology-stocks/api/snapshot?symbols=' + symbols.join())
-        // .toRx()
-        .map(res => res.json());
+      return this.http.get(service + '/stocks/snapshot?symbols=' + symbols.join());
     }
   }
 }

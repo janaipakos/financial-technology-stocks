@@ -1,20 +1,16 @@
-import {Component, View, NgIf, NgClass} from 'angular2/angular2';
+import {Component} from 'angular2/core';
 
-import {StockInterface} from '../services/stocks';
+import {StockInterface} from './stocks.service';
 
 @Component({
   selector: 'summary',
-  properties: ['stock: symbol']
-})
-@View({
-  directives: [NgIf, NgClass],
+  properties: ['stock: symbol'],
   template: `
-<div class="mdl-card stock-card mdl-shadow--2dp" [ng-class]="{increase: isPositive(), decrease: isNegative()}" style="width: 100%;">
-  <span *ng-if="stock">
+<div class="mdl-card stock-card mdl-shadow--2dp" [ngClass]="{increase: isPositive(), decrease: isNegative()}" style="width: 100%;">
+  <span *ngIf="stock">
     <div class="mdl-card__title">
       <h4 style="color: #fff; margin: 0">
         {{stock.symbol.toUpperCase()}}<br />
-        {{stock.name}}<br />
         {{stock.lastTradePriceOnly | currency:'USD':true:'.2'}}<br />
         {{stock.change | currency:'USD':true:'.2'}} ({{stock.changeInPercent | percent}})
       </h4>
