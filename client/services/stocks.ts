@@ -1,14 +1,13 @@
 import { Inject } from 'angular2/angular2';
 import { Http } from 'angular2/http';
 
-let stocks: Array<string> = ['V', 'MA', 'AXP', 'FISV', 'LC', 'JKHY', 'SSNC', 'ACIW', 'FICO', 'ONDK', 'VIRT'];
+let stocks: Array<string> = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TWTR'];
 
 export interface StockInterface {
   symbol: string;
   lastTradePriceOnly: number;
   change: number;
   changeInPercent: number;
-  name: string;
 }
 
 export class StocksService {

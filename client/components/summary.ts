@@ -14,7 +14,6 @@ import {StockInterface} from '../services/stocks';
     <div class="mdl-card__title">
       <h4 style="color: #fff; margin: 0">
         {{stock.symbol.toUpperCase()}}<br />
-        {{stock.name}}<br />
         {{stock.lastTradePriceOnly | currency:'USD':true:'.2'}}<br />
         {{stock.change | currency:'USD':true:'.2'}} ({{stock.changeInPercent | percent}})
       </h4>
