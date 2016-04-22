@@ -4,7 +4,8 @@
   "description": "Stock tracker in Angular 2",
   "main": "server/bootstrap.js",
   "scripts": {
-    "start": "npm install && node ./node_modules/gulp/bin/gulp.js go"
+    "start": "npm install && node ./node_modules/gulp/bin/gulp.js go",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   "dependencies": {
     "angular2": "2.0.0-alpha.44",
     "express": "4.13.1",
+    "gh-pages": "^0.11.0",
     "systemjs": "0.19.2",
     "yahoo-finance": "0.2.11"
   },
