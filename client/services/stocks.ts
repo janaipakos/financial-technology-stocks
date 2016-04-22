@@ -32,7 +32,7 @@ export class StocksService {
 
   load(symbols) {
     if (symbols) {
-      return this.http.get('/api/snapshot?symbols=' + symbols.join())
+      return this.http.get('https://angular2-in-action-api.herokuapp.com/stocks/snapshot?symbols=' + symbols.join())
         // .toRx()
         .map(res => res.json());
     }

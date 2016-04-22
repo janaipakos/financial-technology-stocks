@@ -2,10 +2,12 @@ import {Component, View} from 'angular2/angular2';
 import {RouteConfig, Router, RouterOutlet, RouterLink} from 'angular2/router';
 
 import {Dashboard} from './dashboard';
+import {Clinton} from './clinton';
 import {Manage} from './manage';
 
 @RouteConfig([
   {path: '/', as: 'Dashboard', component: Dashboard},
+  {path: '/clinton', as: 'Clinton', component: Clinton},
   {path: '/manage', as: 'Manage', component: Manage}
 ])
 
@@ -22,6 +24,7 @@ import {Manage} from './manage';
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation mdl-layout--large-screen-only">
           <a class="mdl-navigation__link" [router-link]="['/Dashboard']">Dashboard</a>
+          <a class="mdl-navigation__link" [router-link]="['/Clinton']">Clinton</a>
           <a class="mdl-navigation__link" [router-link]="['/Manage']">Manage</a>
         </nav>
       </div>
