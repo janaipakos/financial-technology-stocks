@@ -32,7 +32,7 @@ var StocksService = (function () {
     };
     StocksService.prototype.load = function (symbols) {
         if (symbols) {
-            return this.http.get('/api/snapshot?symbols=' + symbols.join())
+            return this.http.get('https://angular2-in-action-api.herokuapp.com/stocks/snapshot?symbols=' + symbols.join())
                 .map(function (res) { return res.json(); });
         }
     };
