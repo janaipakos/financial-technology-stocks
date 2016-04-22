@@ -1,8 +1,7 @@
-import {Inject} from 'angular2/core';
-import {Http} from 'angular2/http';
+import { Inject } from 'angular2/angular2';
+import { Http } from 'angular2/http';
 
 let stocks: Array<string> = ['AAPL', 'GOOG', 'FB', 'AMZN', 'TWTR'];
-let service: string = 'https://angular2-in-action-api.herokuapp.com';
 
 export interface StockInterface {
   symbol: string;
@@ -13,8 +12,8 @@ export interface StockInterface {
 
 export class StocksService {
   http: Http;
-  constructor(@Inject(Http) http) {
-    this.http = http;
+  constructor(@Inject(Http) Http) {
+      this.http = Http;
   }
 
   get() {
@@ -33,7 +32,9 @@ export class StocksService {
 
   load(symbols) {
     if (symbols) {
-      return this.http.get(service + '/stocks/snapshot?symbols=' + symbols.join());
+      return this.http.get('/api/snapshot?symbols=' + symbols.join())
+        // .toRx()
+        .map(res => res.json());
     }
   }
 }
