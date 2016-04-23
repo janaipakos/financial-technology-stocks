@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var angular2_1 = require('angular2/angular2');
 var http_1 = require('angular2/http');
-var stocks = ['TSLA', 'HCA', 'VMC'];
+var stocks = ['CYH', 'HCA', 'NOC', 'RUN', 'SCTY', 'SPWR'];
 var StocksService = (function () {
     function StocksService(Http) {
         this.http = Http;
@@ -44,4 +44,4 @@ var StocksService = (function () {
 })();
 exports.StocksService = StocksService;
 
-//# sourceMappingURL=../services/stocksSanders.js.map
+//# sourceMappingURL=../services/stocksSoltysik.js.map

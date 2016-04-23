@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var angular2_1 = require('angular2/angular2');
 var http_1 = require('angular2/http');
-var stocks = ['AAPL', 'BMY', 'GEO', 'CX', 'XOM', 'HCA', 'T', 'KMI', 'VZ', 'ETP', 'ALTR', 'IBM', 'COP', 'JPM', 'CAT'];
+var stocks = ['AAPL', 'BMY', 'GEO', 'CX', 'XOM', 'HCA', 'T', 'KMI', 'VZ', 'ETP', 'IBM', 'COP', 'JPM', 'CAT'];
 var StocksService = (function () {
     function StocksService(Http) {
         this.http = Http;
