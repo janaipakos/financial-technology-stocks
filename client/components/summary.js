@@ -32,7 +32,7 @@ var Summary = (function () {
         }),
         angular2_1.View({
             directives: [angular2_1.NgIf, angular2_1.NgClass],
-            template: "\n<div class=\"mdl-card stock-card mdl-shadow--2dp\" [ng-class]=\"{increase: isPositive(), decrease: isNegative()}\" style=\"width: 100%;\">\n  <span *ng-if=\"stock\">\n    <div class=\"mdl-card__title\">\n      <h4 style=\"color: #fff; margin: 0\">\n        {{stock.symbol.toUpperCase()}}<br />\n        {{stock.lastTradePriceOnly | currency:'USD':true:'.2'}}<br />\n        {{stock.change | currency:'USD':true:'.2'}} ({{stock.changeInPercent | percent}})\n      </h4>\n    </div>\n  </span>\n</div>\n"
+            template: "\n<div class=\"mdl-card stock-card mdl-shadow--2dp\" [ng-class]=\"{increase: isPositive(), decrease: isNegative()}\" style=\"width: 100%;\">\n  <span *ng-if=\"stock\">\n    <div class=\"mdl-card__title\">\n      <h4 style=\"color: #fff; margin: 0\">\n        {{stock.symbol.toUpperCase()}}<br />\n        {{stock.name}}<br />\n        {{stock.lastTradePriceOnly | currency:'USD':true:'.2'}}<br />\n        {{stock.change | currency:'USD':true:'.2'}} ({{stock.changeInPercent | percent}})\n      </h4>\n    </div>\n  </span>\n</div>\n"
         }), 
         __metadata('design:paramtypes', [])
     ], Summary);

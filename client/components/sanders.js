@@ -11,27 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var angular2_1 = require('angular2/angular2');
 var summary_1 = require('./summary');
-var stocks_1 = require('../services/stocks');
-var Dashboard = (function () {
-    function Dashboard(service) {
+var stocksSanders_1 = require('../services/stocksSanders');
+var Sanders = (function () {
+    function Sanders(service) {
         var _this = this;
         this.symbols = service.get();
         service.load(this.symbols)
             .subscribe(function (stocks) { return _this.stocks = stocks; });
     }
-    Dashboard = __decorate([
+    Sanders = __decorate([
         angular2_1.Component({
-            selector: 'dashboard',
-            viewBindings: [stocks_1.StocksService]
+            selector: 'sanders',
+            viewBindings: [stocksSanders_1.StocksService]
         }),
         angular2_1.View({
             directives: [angular2_1.NgIf, angular2_1.NgFor, summary_1.Summary],
-            template: "\n    <h2>Your Favorite Stocks</h2>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--12-col\" *ng-if=\"!stocks\" style=\"text-align: center;\">\n        Loading\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\" *ng-for=\"#stock of stocks\">\n        <summary [symbol]=\"stock\"></summary>\n      </div>\n    </div>\n  "
+            template: "\n    <h2>Bernie Sanders' Favorite Stocks</h2>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--12-col\" *ng-if=\"!stocks\" style=\"text-align: center;\">\n        Loading\n      </div>\n      <div class=\"mdl-cell mdl-cell--3-col\" *ng-for=\"#stock of stocks\">\n        <summary [symbol]=\"stock\"></summary>\n      </div>\n    </div>\n  "
         }), 
-        __metadata('design:paramtypes', [stocks_1.StocksService])
-    ], Dashboard);
-    return Dashboard;
+        __metadata('design:paramtypes', [stocksSanders_1.StocksService])
+    ], Sanders);
+    return Sanders;
 })();
-exports.Dashboard = Dashboard;
+exports.Sanders = Sanders;
 
-//# sourceMappingURL=../components/dashboard.js.map
+//# sourceMappingURL=../components/sanders.js.map
